@@ -374,6 +374,35 @@ document.getElementById("logoutBtn").onclick=async()=>{if(db) await db.auth.sign
 document.getElementById("hwDate").value=isoToday();
 document.getElementById("hwDateFilter").value=isoToday();
 populateSubjects();renderSchedule();renderToday();renderHomework();
+document.getElementById("themeBtn").onclick = () => {
+  const theme = prompt("Выбери тему: blue, purple, green или dark", "blue");
+
+  const themes = {
+    blue: "#2563eb",
+    purple: "#9333ea",
+    green: "#16a34a",
+    dark: "#111827"
+  };
+
+  if (themes[theme]) {
+    document.documentElement.style.setProperty("--accent", themes[theme]);
+    localStorage.setItem("theme", theme);
+  }
+};
+
+const savedTheme = localStorage.getItem("theme");
+if (savedTheme) {
+  const themes = {
+    blue: "#2563eb",
+    purple: "#9333ea",
+    green: "#16a34a",
+    dark: "#111827"
+  };
+
+  if (themes[savedTheme]) {
+    document.documentElement.style.setProperty("--accent", themes[savedTheme]);
+  }
+}
 </script>
 </body>
 </html>
