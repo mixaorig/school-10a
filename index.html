@@ -314,6 +314,7 @@ async function loadHomework(){
     renderToday(); renderHomework();
     return;
   }
+  document.getElementById("refreshHomeworkBtn").onclick = loadHomework;
   onlineLoading=true;
   const {data,error}=await db.from("homework").select("*").order("date",{ascending:true});
   onlineLoading=false;
