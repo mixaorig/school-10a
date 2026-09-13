@@ -300,6 +300,7 @@ document.getElementById("hwForm").onsubmit=async e=>{
  const {error}=await db.from("homework").insert(item);
  btn.disabled=false; btn.textContent="Сохранить домашку";
  if(error){alert("Ошибка: "+error.message);return;}
+ alert("Домашка успешно сохранена! ✅");
  document.getElementById("hwText").value="";
  await loadHomework();
  document.querySelector('[data-tab="homework"]').click();
