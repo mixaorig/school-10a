@@ -100,7 +100,7 @@ using (true);
 <main class="container">
   <div class="profiles">
     <button class="profile active" data-profile="soc">🔵 СОЦ-ЭКОНОМ<small>Профильное расписание</small></button>
-    <button class="profile" data-profile="chem">🟢 ХИМ-БИО<small>Профильное расписание</small></button>
+    <letbutton class="profile" data-profile="chem">🟢 ХИМ-БИО<small>Профильное расписание</small></button>
   </div>
 
   <nav>
@@ -213,6 +213,7 @@ const days=["Понедельник","Вторник","Среда","Четвер
 const dow=["Воскресенье","Понедельник","Вторник","Среда","Четверг","Пятница","Суббота"];
 let profile=localStorage.getItem("profile")||"soc";
 let homework=[];
+let currentSession=null;
 let onlineLoading=false;
 
 function isoToday(){
@@ -253,7 +254,7 @@ function renderToday(){
  document.getElementById("todayHomework").innerHTML=hw.length?hw.map(hwCard).join(""):"<div class='empty'>Домашних заданий на сегодня пока нет.</div>";
 }
 function hwCard(x){
- return `<div class="hw"><div><span class="badge">${x.subject}</span><div>${escapeHtml(x.text)}</div></div><button class="delete" onclick="removeHw('${x.id}')">Удалить</button></div>`;
+ return `<div class="hw"><div><span class="badge">${x.subject}</span><div>${escapeHtml(x.text)}</div></div>${currentSession ? `<button class="delete" onclick="removeHw('${x.id}')">Удалить</button>` : ""}</div>`;
 }
 function renderHomework(){
  const date=document.getElementById("hwDateFilter").value;
@@ -330,6 +331,7 @@ const adminBar=document.getElementById("adminBar");
 const loginForm=document.getElementById("loginForm");
 
 function updateAdminUI(session){
+  currentSession=session;
   const logged=!!session;
   addTab.style.display="inline-block";
   loginCard.style.display=logged?"none":"block";
