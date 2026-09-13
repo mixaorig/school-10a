@@ -247,6 +247,15 @@ function renderSchedule(){
    grid.appendChild(box);
  });
 }
+  function isCurrentLesson(time){
+  const now=new Date();
+  const current=now.getHours()*60+now.getMinutes();
+  const [start,end]=time.split("–").map(x=>{
+    const [h,m]=x.split(":").map(Number);
+    return h*60+m;
+  });
+  return current>=start && current<=end;
+  }
 function renderToday(){
  const now=new Date(), date=isoToday(), day=dow[now.getDay()];
  document.getElementById("todayDate").textContent=formatDate(date);
