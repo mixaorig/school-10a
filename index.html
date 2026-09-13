@@ -262,7 +262,7 @@ function renderToday(){
  const lessons=document.getElementById("todayLessons");
  const arr=schedule[profile][day];
  if(!arr){lessons.innerHTML="<div class='empty'>Сегодня выходной 🎉</div>";}
- else lessons.innerHTML=arr.map(([t,n,r])=>`<div class="lesson"><div class="time">${t}</div><div class="name">${n}</div>${r?`<div class="room">каб. ${r}</div>`:""}</div>`).join("");
+ else lessons.innerHTML=arr.map(([t,n,r])=>`<div class="${isCurrentLesson(t)?"lesson current":"lesson"}"><div class="time">${t}</div><div class="name">${n}</div>${r?`<div class="room">каб. ${r}</div>`:""}</div>`).join("");
  const hw=homework.filter(x=>x.date===date && x.profile===profile);
  document.getElementById("todayHomework").innerHTML=hw.length?hw.map(hwCard).join(""):"<div class='empty'>Домашних заданий на сегодня пока нет.</div>";
 }
