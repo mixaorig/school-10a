@@ -286,6 +286,7 @@ document.querySelectorAll(".profile").forEach(b=>b.onclick=()=>{
 document.querySelectorAll(".tab").forEach(b=>b.onclick=()=>{
  document.querySelectorAll(".tab").forEach(x=>x.classList.toggle("active",x===b));
  document.querySelectorAll(".panel").forEach(x=>x.classList.toggle("active",x.id===b.dataset.tab));
+  if(b.dataset.tab==="homework") loadHomework();
 });
 document.getElementById("hwForm").onsubmit=async e=>{
  e.preventDefault();
