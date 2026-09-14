@@ -161,6 +161,36 @@ nav button:not(.active),
     transform: translateY(-8px);
   }
 }
+  .logo {
+    position: relative;
+    isolation: isolate;
+}
+
+.logo::before {
+    content: "";
+    position: absolute;
+    inset: -4px;
+    border-radius: 25px;
+    background: conic-gradient(
+        #4facfe,
+        #7c3aed,
+        #ec4899,
+        #4facfe
+    );
+    animation: ringRotate 4s linear infinite;
+    z-index: -1;
+}
+
+.logo span {
+    position: relative;
+    z-index: 1;
+}
+
+@keyframes ringRotate {
+    to {
+        transform: rotate(360deg);
+    }
+}
 </style>
 
 <!--
@@ -200,7 +230,9 @@ using (true);
 <body>
 <header>
   <div class="brand">
-    <div class="logo">10</div>
+    <div class="logo">
+    <span>10</span>
+</div>
     <div><img src="file_000000006ce882468987ca637ddb454c.png" alt="Плюшевый мишка"><h1>10 класс</h1><div class="sub">Расписание • домашние задания • всё в одном месте</div></div>
   </div>
 </header>
