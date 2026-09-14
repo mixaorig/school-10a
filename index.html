@@ -349,6 +349,17 @@ body {
   background: var(--accent);
   color: white;
 } 
+  .week-tabs button.active {
+  background: linear-gradient(
+    135deg,
+    var(--accent),
+    var(--accent2)
+  );
+  color: #fff;
+  border-color: var(--accent);
+  box-shadow: 0 0 18px rgba(79, 70, 229, 0.45);
+  transform: translateY(-2px);
+  }
 </style>
 
 <!--
@@ -779,6 +790,30 @@ if (savedTheme) {
 }
 }
   function goToDay(day) {
+  const buttons = document.querySelectorAll(".week-tabs button");
+
+  buttons.forEach(button => {
+    button.classList.remove("active");
+  });
+
+  buttons.forEach(button => {
+    if (button.textContent.trim() === day.slice(0, 2)) {
+      button.classList.add("active");
+    }
+  });
+
+  const boxes = document.querySelectorAll(".day-head");
+
+  for (const head of boxes) {
+    if (head.textContent.trim() === day) {
+      head.parentElement.scrollIntoView({
+        behavior: "smooth",
+        block: "start"
+      });
+      break;
+    }
+  }
+  }
   const boxes = document.querySelectorAll(".day-head");
 
   for (const head of boxes) {
