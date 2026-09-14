@@ -6,8 +6,13 @@
 <title>10 класс — расписание и домашка</title>
 <style>
 :root{
-  --bg:#f4f7fb; --card:#fff; --text:#172033; --muted:#6b7280;
-  --accent:#4f46e5; --accent2:#7c3aed; --border:#e6eaf2;
+  --bg:#f4f7fb;
+  --card:#ffffff;
+  --text:#172033;
+  --muted:#667085;
+  --accent:#4f46e5;
+  --accent2:#7c3aed;
+  --border:#dbe2ea;
   --shadow:0 12px 35px rgba(25,35,60,.08);
 }
 *{box-sizing:border-box}
@@ -378,30 +383,101 @@ document.getElementById("themeBtn").onclick = () => {
   const theme = prompt("Выбери тему: blue, purple, green или dark", "blue");
 
   const themes = {
-    blue: "#2563eb",
-    purple: "#9333ea",
-    green: "#16a34a",
-    dark: "#111827"
-  };
+  blue: {
+    bg: "#f4f7fb",
+    card: "#ffffff",
+    text: "#172033",
+    muted: "#667085",
+    accent: "#2563eb",
+    border: "#dbe2ea"
+  },
+  purple: {
+    bg: "#faf5ff",
+    card: "#ffffff",
+    text: "#2e1065",
+    muted: "#7e6b9b",
+    accent: "#9333ea",
+    border: "#e9d5ff"
+  },
+  green: {
+    bg: "#f0fdf4",
+    card: "#ffffff",
+    text: "#14532d",
+    muted: "#65816f",
+    accent: "#16a34a",
+    border: "#bbf7d0"
+  },
+  dark: {
+    bg: "#111827",
+    card: "#1f2937",
+    text: "#f9fafb",
+    muted: "#cbd5e1",
+    accent: "#60a5fa",
+    border: "#374151"
+  }
+};
 
   if (themes[theme]) {
-    document.documentElement.style.setProperty("--accent", themes[theme]);
-    localStorage.setItem("theme", theme);
+  const t = themes[theme];
+
+  document.documentElement.style.setProperty("--bg", t.bg);
+  document.documentElement.style.setProperty("--card", t.card);
+  document.documentElement.style.setProperty("--text", t.text);
+  document.documentElement.style.setProperty("--muted", t.muted);
+  document.documentElement.style.setProperty("--accent", t.accent);
+  document.documentElement.style.setProperty("--border", t.border);
+
+  localStorage.setItem("theme", theme);
   }
 };
 
 const savedTheme = localStorage.getItem("theme");
 if (savedTheme) {
   const themes = {
-    blue: "#2563eb",
-    purple: "#9333ea",
-    green: "#16a34a",
-    dark: "#111827"
-  };
+  blue: {
+    bg: "#f4f7fb",
+    card: "#ffffff",
+    text: "#172033",
+    muted: "#667085",
+    accent: "#2563eb",
+    border: "#dbe2ea"
+  },
+  purple: {
+    bg: "#faf5ff",
+    card: "#ffffff",
+    text: "#2e1065",
+    muted: "#7e6b9b",
+    accent: "#9333ea",
+    border: "#e9d5ff"
+  },
+  green: {
+    bg: "#f0fdf4",
+    card: "#ffffff",
+    text: "#14532d",
+    muted: "#65816f",
+    accent: "#16a34a",
+    border: "#bbf7d0"
+  },
+  dark: {
+    bg: "#111827",
+    card: "#1f2937",
+    text: "#f9fafb",
+    muted: "#cbd5e1",
+    accent: "#60a5fa",
+    border: "#374151"
+  }
+};
 
   if (themes[savedTheme]) {
-    document.documentElement.style.setProperty("--accent", themes[savedTheme]);
-  }
+  const t = themes[savedTheme];
+
+  document.documentElement.style.setProperty("--bg", t.bg);
+  document.documentElement.style.setProperty("--card", t.card);
+  document.documentElement.style.setProperty("--text", t.text);
+  document.documentElement.style.setProperty("--muted", t.muted);
+  document.documentElement.style.setProperty("--accent", t.accent);
+  document.documentElement.style.setProperty("--border", t.border);
+}
 }
 </script>
 </body>
