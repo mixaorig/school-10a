@@ -409,7 +409,7 @@ using (true);
 <main class="container">
   <div class="profiles">
     <button class="profile active" data-profile="soc">🔵 СОЦ-ЭКОНОМ<small>Профильное расписание</small></button>
-    <letbutton class="profile" data-profile="chem">🟢 ХИМ-БИО<small>Профильное расписание</small></button>
+    <button class="profile" data-profile="chem">🟢 ХИМ-БИО<small>Профильное расписание</small></button>
   </div>
 
   <nav>
@@ -434,13 +434,15 @@ using (true);
   <section id="schedule" class="panel">
     <div class="card">
       <div class="section-title"><h2>📅 Расписание недели</h2><span class="date" id="profileLabel"></span></div>
-      <div class="week-tabs" id="weekTabs">
-  <button onclick="goToDay('Понедельник')">Пн</button>
-  <button onclick="goToDay('Вторник')">Вт</button>
-  <button onclick="goToDay('Среда')">Ср</button>
-  <button onclick="goToDay('Четверг')">Чт</button>
-  <button onclick="goToDay('Пятница')">Пт</button>
-      </div>
+      
+<div class="week-tabs" id="weekTabs">
+  <button data-day="Понедельник" onclick="goToDay('Понедельник')">Пн</button>
+  <button data-day="Вторник" onclick="goToDay('Вторник')">Вт</button>
+  <button data-day="Среда" onclick="goToDay('Среда')">Ср</button>
+  <button data-day="Четверг" onclick="goToDay('Четверг')">Чт</button>
+  <button data-day="Пятница" onclick="goToDay('Пятница')">Пт</button>
+</div>
+
       <div class="day-grid" id="weekGrid"></div>
     </div>
   </section>
@@ -790,14 +792,14 @@ if (savedTheme) {
 }
 }
   function goToDay(day) {
+  
+function goToDay(day) {
   const buttons = document.querySelectorAll(".week-tabs button");
 
   buttons.forEach(button => {
     button.classList.remove("active");
-  });
 
-  buttons.forEach(button => {
-    if (button.textContent.trim() === day.slice(0, 2)) {
+    if (button.dataset.day === day) {
       button.classList.add("active");
     }
   });
@@ -812,6 +814,12 @@ if (savedTheme) {
       });
       break;
     }
+  }
+}
+</script>
+</body>
+</html>
+
 </script>
 </body>
 </html>
