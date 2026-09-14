@@ -103,6 +103,18 @@ nav button:not(.active),
     padding:12px 8px;
   }
 }
+  .brand img {
+  animation: teddyFloat 3s ease-in-out infinite;
+}
+
+@keyframes teddyFloat {
+  0%, 100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(-8px);
+  }
+}
 </style>
 
 <!--
