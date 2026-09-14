@@ -814,18 +814,6 @@ if (savedTheme) {
     }
   }
   }
-  const boxes = document.querySelectorAll(".day-head");
-
-  for (const head of boxes) {
-    if (head.textContent.trim() === day) {
-      head.parentElement.scrollIntoView({
-        behavior: "smooth",
-        block: "start"
-      });
-      break;
-    }
-  }
-  }
 </script>
 </body>
 </html>
