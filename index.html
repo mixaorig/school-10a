@@ -87,6 +87,21 @@ nav button:not(.active),
 .day-head{
   background:var(--bg)!important;
 }
+@media(max-width:560px){
+  nav{
+    display:grid;
+    grid-template-columns:1fr 1fr;
+    gap:8px;
+    overflow:visible;
+  }
+
+  nav button{
+    width:100%;
+    min-width:0;
+    white-space:normal;
+    padding:12px 8px;
+  }
+}
 </style>
 
 <!--
