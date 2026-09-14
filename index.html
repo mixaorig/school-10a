@@ -286,6 +286,27 @@ button:active {
   transform: scale(0.97);
 }
   
+/* Улучшенные кнопки навигации */
+nav button {
+  border-radius: 14px;
+  font-weight: 600;
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+nav button:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 8px 20px rgba(79, 70, 229, 0.25);
+}
+
+nav button:active {
+  transform: scale(0.95);
+}
+
+/* Активная кнопка */
+nav button.active {
+  box-shadow: 0 6px 20px rgba(79, 70, 229, 0.3);
+}
+  
 </style>
 
 <!--
