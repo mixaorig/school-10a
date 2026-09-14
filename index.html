@@ -68,6 +68,25 @@ textarea{min-height:90px;resize:vertical}
 .tip{color:var(--muted);font-size:13px;margin-top:10px}
 @media(max-width:850px){.day-grid{grid-template-columns:1fr 1fr}.day:last-child{grid-column:span 2}}
 @media(max-width:560px){h1{font-size:22px}.profiles{grid-template-columns:1fr}.day-grid{grid-template-columns:1fr}.day:last-child{grid-column:auto}.row{grid-template-columns:1fr}.container{padding:0 12px 40px}header{padding:22px 12px 15px}}
+  body{
+  background:var(--bg)!important;
+  color:var(--text)!important;
+}
+
+nav button:not(.active),
+.today-controls button:not(.active){
+  background:var(--card)!important;
+  color:var(--text)!important;
+  border-color:var(--border)!important;
+}
+
+.day{
+  background:var(--card)!important;
+}
+
+.day-head{
+  background:var(--bg)!important;
+}
 </style>
 
 <!--
