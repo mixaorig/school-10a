@@ -247,6 +247,45 @@ button:active {
   filter: brightness(1.1);
 }
   
+/* Красивые карточки профилей */
+.profile {
+  position: relative;
+  overflow: hidden;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+/* Световой эффект */
+.profile::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: -100%;
+  width: 60%;
+  height: 100%;
+  background: linear-gradient(
+    90deg,
+    transparent,
+    rgba(255, 255, 255, 0.18),
+    transparent
+  );
+  transform: skewX(-20deg);
+  transition: left 0.6s ease;
+  pointer-events: none;
+}
+
+.profile:hover::before {
+  left: 130%;
+}
+
+.profile:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 12px 35px rgba(79, 70, 229, 0.25);
+}
+
+.profile:active {
+  transform: scale(0.97);
+}
+  
 </style>
 
 <!--
