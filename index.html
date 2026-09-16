@@ -477,6 +477,18 @@ using (true);
   </form>
   <div class="tip">Ученики могут смотреть расписание и домашку без входа. Только аккаунт администратора сможет добавлять и удалять задания.</div>
 </div> 
+    <div class="card">
+      <div class="section-title"><h2>➕ Добавить домашнее задание</h2></div>
+      <form id="hwForm">
+        <div class="row">
+          <div><label>Дата</label><input type="date" id="hwDate" required></div>
+          <div><label>Предмет</label><select id="hwSubject" required></select></div>
+        </div>
+        <div><label>Задание</label><textarea id="hwText" placeholder="Например: §12, вопросы 1–5; подготовить сообщение..." required></textarea></div>
+        <button class="primary">Сохранить домашку</button>
+      </form>
+      <div class="tip">Домашка сохраняется в общей онлайн-базе и видна ученикам выбранного профиля.</div>
+    </div>
   </section>
   <section id="grades" class="panel">
     <div class="card">
@@ -507,18 +519,7 @@ using (true);
       <div id="gradesResult" class="tip" aria-live="polite"></div>
     </div>
   </section>
-    <div class="card">
-      <div class="section-title"><h2>➕ Добавить домашнее задание</h2></div>
-      <form id="hwForm">
-        <div class="row">
-          <div><label>Дата</label><input type="date" id="hwDate" required></div>
-          <div><label>Предмет</label><select id="hwSubject" required></select></div>
-        </div>
-        <div><label>Задание</label><textarea id="hwText" placeholder="Например: §12, вопросы 1–5; подготовить сообщение..." required></textarea></div>
-        <button class="primary">Сохранить домашку</button>
-      </form>
-      <div class="tip">Домашка сохраняется в общей онлайн-базе и видна ученикам выбранного профиля.</div>
-    </div>
+    
 </main>
 
 
@@ -695,9 +696,13 @@ const loginForm=document.getElementById("loginForm");
 function updateAdminUI(session){
   currentSession=session;
   const logged=!!session;
+
   addTab.style.display="inline-block";
   loginCard.style.display=logged?"none":"block";
   adminBar.style.display=logged?"block":"none";
+
+  document.getElementById("hwForm").parentElement.style.display =
+    logged ? "block" : "none";
 }
 if(db){
   db.auth.getSession().then(({data})=>updateAdminUI(data.session));
