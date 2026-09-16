@@ -863,34 +863,7 @@ function goToDay(day) {
   }
 }
 
-// Калькулятор оценок
-const calculateGradesBtn = document.getElementById("calculateGradesBtn");
 
-if (calculateGradesBtn) {
-  calculateGradesBtn.addEventListener("click", function () {
-    const input = document.getElementById("gradesInput");
-    const result = document.getElementById("gradesResult");
-
-    const grades = input.value
-      .split(",")
-      .map(g => Number(g.trim()));
-
-    if (
-      !input.value.trim() ||
-      grades.some(g => !Number.isInteger(g) || g < 1 || g > 5)
-    ) {
-      result.textContent =
-        "Введи оценки от 1 до 5 через запятую.";
-      return;
-    }
-
-    const sum = grades.reduce((a, b) => a + b, 0);
-    const average = sum / grades.length;
-
-    result.textContent =
-      "Средний балл: " + average.toFixed(2);
-  });
-}
 </script>
 </body>
 </html>
