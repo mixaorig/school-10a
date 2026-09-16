@@ -864,7 +864,25 @@ function goToDay(day) {
     }
   }
 }
+document.getElementById("calculateGradesBtn").addEventListener("click", () => {
+  const input = document.getElementById("gradesInput").value;
 
+  const grades = input
+    .split(",")
+    .map(Number)
+    .filter(n => n >= 1 && n <= 5);
+
+  const result = document.getElementById("gradesResult");
+
+  if (grades.length === 0) {
+    result.textContent = "Введи оценки от 1 до 5 через запятую.";
+    return;
+  }
+
+  const average = grades.reduce((sum, grade) => sum + grade, 0) / grades.length;
+
+  result.textContent = `Средний балл: ${average.toFixed(2)}`;
+});
 </script>
 </body>
 </html>
