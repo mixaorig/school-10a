@@ -443,36 +443,7 @@ using (true);
   <button data-day="Четверг" onclick="goToDay('Четверг')">Чт</button>
   <button data-day="Пятница" onclick="goToDay('Пятница')">Пт</button>
 </div>
-  <section id="grades" class="panel">
-    <div class="card">
-      <div class="section-title">
-        <h2>📊 Калькулятор оценок</h2>
-      </div>
 
-      <p class="tip">
-        Введи свои оценки через запятую.
-        Например: 5, 4, 5, 3, 4
-      </p>
-
-      <label for="gradesInput">Оценки</label>
-      <input
-        type="text"
-        id="gradesInput"
-        placeholder="5, 4, 5, 3, 4"
-      >
-
-      <button
-        class="primary"
-        type="button"
-        id="calculateGradesBtn"
-        style="margin-top:10px"
-      >
-        Рассчитать средний балл
-      </button>
-
-      <div id="gradesResult" class="tip" aria-live="polite"></div>
-    </div>
-  </section>
       <div class="day-grid" id="weekGrid"></div>
     </div>
   </section>
@@ -507,7 +478,36 @@ using (true);
   </form>
   <div class="tip">Ученики могут смотреть расписание и домашку без входа. Только аккаунт администратора сможет добавлять и удалять задания.</div>
 </div>
+  <section id="grades" class="panel">
+    <div class="card">
+      <div class="section-title">
+        <h2>📊 Калькулятор оценок</h2>
+      </div>
 
+      <p class="tip">
+        Введи свои оценки через запятую.
+        Например: 5, 4, 5, 3, 4
+      </p>
+
+      <label for="gradesInput">Оценки</label>
+      <input
+        type="text"
+        id="gradesInput"
+        placeholder="5, 4, 5, 3, 4"
+      >
+
+      <button
+        class="primary"
+        type="button"
+        id="calculateGradesBtn"
+        style="margin-top:10px"
+      >
+        Рассчитать средний балл
+      </button>
+
+      <div id="gradesResult" class="tip" aria-live="polite"></div>
+    </div>
+  </section>
     <div class="card">
       <div class="section-title"><h2>➕ Добавить домашнее задание</h2></div>
       <form id="hwForm">
