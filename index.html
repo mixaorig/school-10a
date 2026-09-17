@@ -71,8 +71,19 @@ header{padding:28px 18px 18px;max-width:1100px;margin:auto}
 h1{font-size:27px;margin:0} .sub{color:var(--muted);margin-top:3px}
 .container{max-width:1100px;margin:auto;padding:0 18px 50px}
 .profiles{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin:8px 0 18px}
-.profile{border:0;border-radius:18px;padding:17px;background:var(--card);box-shadow:var(--shadow);cursor:pointer;text-align:left;font-size:16px;font-weight:800;color:var(--text);transition:.2s    transition: transform 0.3s ease, box-shadow 0.3s ease;
-    cursor: pointer;}
+.profile{
+  border:0;
+  border-radius:18px;
+  padding:17px;
+  background:var(--card);
+  box-shadow:var(--shadow);
+  cursor:pointer;
+  text-align:left;
+  font-size:16px;
+  font-weight:800;
+  color:var(--text);
+  transition:transform 0.3s ease, box-shadow 0.3s ease;
+}
 .profile small{display:block;color:var(--muted);font-weight:500;margin-top:4px}
 .profile.active{color:#fff;background:linear-gradient(135deg,var(--accent),var(--accent2))}
 .profile.active small{color:#e9e7ff}
@@ -678,8 +689,51 @@ using (true);
 
     <form id="eventForm" class="form-grid">
       <input
-        id="event   
-        >
+        type="text"
+        id="eventTitle"
+        placeholder="Название события"
+        required
+      >
+
+      <input
+        type="date"
+        id="eventDate"
+        required
+      >
+
+      <input
+        type="text"
+        id="eventDescription"
+        placeholder="Описание, кабинет или дополнительная информация"
+      >
+
+      <button class="primary" type="submit">
+        Добавить дату
+      </button>
+    </form>
+
+    <div id="eventsList" class="events-list"></div>
+  </div>
+
+  <div class="card">
+    <div class="section-title">
+      <h2>📝 Мои заметки</h2>
+    </div>
+
+    <textarea
+      id="noteInput"
+      rows="4"
+      placeholder="Напиши сюда свою заметку..."
+    ></textarea>
+
+    <button class="primary" id="addNoteBtn" type="button">
+      Добавить заметку
+    </button>
+
+    <div id="notesList" class="notes-list"></div>
+  </div>
+
+    </section>
 </main>
 
 
@@ -870,15 +924,42 @@ if(db){
 }else{
   updateAdminUI(null);
 }
-loginForm.onsubmit=async e=>{
+loginForm.onsubmit = async e => {
   e.preventDefault();
-  if(!db){alert("Сначала подключи Supabase.");return;}
-  const {error}=await db.auth.signInWithPassword({
-    email:document.getElementById("loginEmail").value,
-    password:document.getElementById("loginPassword").value
+
+  if (!db) {
+    alert("Supabase не подключён.");
+    return;
+  }
+
+  const email = document.getElementById("loginEmail").value.trim();
+  const password = document.getElementById("loginPassword").value;
+  const button = loginForm.querySelector("button");
+
+  button.disabled = true;
+  button.textContent = "Входим…";
+
+  const { data, error } = await db.auth.signInWithPassword({
+    email,
+    password
   });
-  if(error) alert("Ошибка входа: "+error.message);
-};
+
+  button.disabled = false;
+  button.textContent = "Войти";
+
+  if (error) {
+    console.error("Ошибка входа:", error);
+    alert("Не удалось войти: " + error.message);
+    return;
+  }
+
+  if (data && data.session) {
+    updateAdminUI(data.session);
+    alert("Вы успешно вошли в режим администратора! ✅");
+  } else {
+    alert("Вход не выполнен: Supabase не вернул сессию.");
+  }
+};;
 document.getElementById("logoutBtn").onclick=async()=>{if(db) await db.auth.signOut();};
 
 document.getElementById("hwDate").value=isoToday();
@@ -967,6 +1048,16 @@ if (savedTheme) {
     accent: "#2563eb",
     border: "#dbe2ea"
   },
+const themes = {
+  blue: {
+    bg: "#f4f7fb",
+    card: "#ffffff",
+    text: "#172033",
+    muted: "#667085",
+    accent: "#2563eb",
+    border: "#dbe2ea"
+  },
+
   purple: {
     bg: "#faf5ff",
     card: "#ffffff",
@@ -975,6 +1066,7 @@ if (savedTheme) {
     accent: "#9333ea",
     border: "#e9d5ff"
   },
+
   green: {
     bg: "#f0fdf4",
     card: "#ffffff",
@@ -983,6 +1075,7 @@ if (savedTheme) {
     accent: "#16a34a",
     border: "#bbf7d0"
   },
+
   dark: {
     bg: "#111827",
     card: "#1f2937",
@@ -993,16 +1086,45 @@ if (savedTheme) {
   }
 };
 
-  if (themes[savedTheme]) {
-  const t = themes[savedTheme];
+function applyTheme(themeName) {
+  const theme = themes[themeName];
 
-  document.documentElement.style.setProperty("--bg", t.bg);
-  document.documentElement.style.setProperty("--card", t.card);
-  document.documentElement.style.setProperty("--text", t.text);
-  document.documentElement.style.setProperty("--muted", t.muted);
-  document.documentElement.style.setProperty("--accent", t.accent);
-  document.documentElement.style.setProperty("--border", t.border);
+  if (!theme) return;
+
+  document.documentElement.style.setProperty("--bg", theme.bg);
+  document.documentElement.style.setProperty("--card", theme.card);
+  document.documentElement.style.setProperty("--text", theme.text);
+  document.documentElement.style.setProperty("--muted", theme.muted);
+  document.documentElement.style.setProperty("--accent", theme.accent);
+  document.documentElement.style.setProperty("--border", theme.border);
+
+  localStorage.setItem("theme", themeName);
 }
+
+document.getElementById("themeBtn").onclick = () => {
+  const currentTheme = localStorage.getItem("theme") || "blue";
+
+  const selectedTheme = prompt(
+    "Выбери тему: blue, purple, green или dark",
+    currentTheme
+  );
+
+  if (selectedTheme === null) return;
+
+  const themeName = selectedTheme.trim().toLowerCase();
+
+  if (!themes[themeName]) {
+    alert("Такой темы нет. Доступны: blue, purple, green, dark.");
+    return;
+  }
+
+  applyTheme(themeName);
+};
+
+const savedTheme = localStorage.getItem("theme");
+
+if (savedTheme && themes[savedTheme]) {
+  applyTheme(savedTheme);
 }
 function goToDay(day) {
   const buttons = document.querySelectorAll(".week-tabs button");
