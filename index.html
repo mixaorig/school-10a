@@ -1027,7 +1027,289 @@ function goToDay(day) {
     }
   }
 }
+// ===============================
+// ВАЖНЫЕ ДАТЫ
+// ===============================
 
+let importantEvents = JSON.parse(
+  localStorage.getItem("importantEvents") || "[]"
+);
+
+function formatEventDate(dateString) {
+  const date = new Date(dateString + "T00:00:00");
+
+  return date.toLocaleDateString("ru-RU", {
+    day: "numeric",
+    month: "long",
+    year: "numeric"
+  });
+}
+
+function getTodayString() {
+  const now = new Date();
+  const year = now.getFullYear();
+  const month = String(now.getMonth() + 1).padStart(2, "0");
+  const day = String(now.getDate()).padStart(2, "0");
+
+  return `${year}-${month}-${day}`;
+}
+
+function saveImportantEvents() {
+  localStorage.setItem(
+    "importantEvents",
+    JSON.stringify(importantEvents)
+  );
+}
+
+function renderImportantEvents() {
+  const list = document.getElementById("eventsList");
+
+  if (!list) return;
+
+  if (importantEvents.length === 0) {
+    list.innerHTML = `
+      <div class="empty">
+        Пока важных дат нет. Добавь первое событие выше.
+      </div>
+    `;
+    return;
+  }
+
+  const today = getTodayString();
+
+  const sortedEvents = [...importantEvents].sort((a, b) => {
+    return a.date.localeCompare(b.date);
+  });
+
+  list.innerHTML = sortedEvents.map(event => {
+    const isToday = event.date === today;
+    const isPast = event.date < today;
+
+    return `
+      <div class="event-item ${isToday ? "today" : ""} ${isPast ? "past" : ""}">
+        <div class="event-info">
+          <div class="event-title">
+            ${escapeHtml(event.title)}
+          </div>
+
+          <div class="event-date">
+            ${formatEventDate(event.date)}
+          </div>
+
+          ${
+            event.description
+              ? `<div class="event-description">${escapeHtml(event.description)}</div>`
+              : ""
+          }
+
+          ${
+            isToday
+              ? `<div class="event-status">🔔 Событие сегодня</div>`
+              : isPast
+                ? `<div class="event-status">Событие прошло</div>`
+                : ""
+          }
+        </div>
+
+        <button
+          class="delete"
+          type="button"
+          onclick="deleteImportantEvent('${event.id}')"
+        >
+          Удалить
+        </button>
+      </div>
+    `;
+  }).join("");
+}
+
+function deleteImportantEvent(id) {
+  importantEvents = importantEvents.filter(event => event.id !== id);
+  saveImportantEvents();
+  renderImportantEvents();
+  renderUpcomingEvent();
+}
+
+const eventForm = document.getElementById("eventForm");
+
+if (eventForm) {
+  eventForm.addEventListener("submit", function(event) {
+    event.preventDefault();
+
+    const title = document.getElementById("eventTitle").value.trim();
+    const date = document.getElementById("eventDate").value;
+    const description = document
+      .getElementById("eventDescription")
+      .value
+      .trim();
+
+    if (!title || !date) return;
+
+    importantEvents.push({
+      id: Date.now().toString(),
+      title,
+      date,
+      description
+    });
+
+    saveImportantEvents();
+    renderImportantEvents();
+    renderUpcomingEvent();
+
+    eventForm.reset();
+  });
+}
+
+
+// ===============================
+// МОИ ЗАМЕТКИ
+// ===============================
+
+let studentNotes = JSON.parse(
+  localStorage.getItem("studentNotes") || "[]"
+);
+
+function saveStudentNotes() {
+  localStorage.setItem(
+    "studentNotes",
+    JSON.stringify(studentNotes)
+  );
+}
+
+function renderStudentNotes() {
+  const list = document.getElementById("notesList");
+
+  if (!list) return;
+
+  if (studentNotes.length === 0) {
+    list.innerHTML = `
+      <div class="empty">
+        Пока заметок нет.
+      </div>
+    `;
+    return;
+  }
+
+  list.innerHTML = studentNotes.map((note, index) => {
+    return `
+      <div class="note-item">
+        <span>${escapeHtml(note)}</span>
+
+        <button
+          class="delete"
+          type="button"
+          onclick="deleteStudentNote(${index})"
+        >
+          Удалить
+        </button>
+      </div>
+    `;
+  }).join("");
+}
+
+function deleteStudentNote(index) {
+  studentNotes.splice(index, 1);
+  saveStudentNotes();
+  renderStudentNotes();
+}
+
+const addNoteBtn = document.getElementById("addNoteBtn");
+
+if (addNoteBtn) {
+  addNoteBtn.addEventListener("click", function() {
+    const input = document.getElementById("noteInput");
+    const text = input.value.trim();
+
+    if (!text) return;
+
+    studentNotes.push(text);
+
+    saveStudentNotes();
+    renderStudentNotes();
+
+    input.value = "";
+  });
+}
+
+
+// ===============================
+// БЛИЖАЙШЕЕ СОБЫТИЕ НА ГЛАВНОМ ЭКРАНЕ
+// ===============================
+
+function renderUpcomingEvent() {
+  const today = getTodayString();
+
+  const upcomingEvents = importantEvents
+    .filter(event => event.date >= today)
+    .sort((a, b) => a.date.localeCompare(b.date));
+
+  const todayHomeworkBlock = document.getElementById("todayHomework");
+
+  if (!todayHomeworkBlock) return;
+
+  const oldAnnouncement = document.getElementById("upcomingEventAnnouncement");
+
+  if (oldAnnouncement) {
+    oldAnnouncement.remove();
+  }
+
+  if (upcomingEvents.length === 0) return;
+
+  const nextEvent = upcomingEvents[0];
+
+  const announcement = document.createElement("div");
+  announcement.id = "upcomingEventAnnouncement";
+  announcement.className = "card";
+  announcement.style.marginTop = "12px";
+
+  const daysLeft = Math.round(
+    (
+      new Date(nextEvent.date + "T00:00:00") -
+      new Date(today + "T00:00:00")
+    ) / 86400000
+  );
+
+  let timingText = "";
+
+  if (daysLeft === 0) {
+    timingText = "🔔 Это событие сегодня";
+  } else if (daysLeft === 1) {
+    timingText = "⏳ До события остался 1 день";
+  } else {
+    timingText = `⏳ До события осталось ${daysLeft} дн.`;
+  }
+
+  announcement.innerHTML = `
+    <div class="section-title">
+      <h2>📢 Ближайшее событие</h2>
+    </div>
+
+    <strong>${escapeHtml(nextEvent.title)}</strong>
+
+    <div class="event-date">
+      ${formatEventDate(nextEvent.date)}
+    </div>
+
+    ${
+      nextEvent.description
+        ? `<div class="event-description">${escapeHtml(nextEvent.description)}</div>`
+        : ""
+    }
+
+    <div class="event-status">${timingText}</div>
+  `;
+
+  todayHomeworkBlock.parentNode.insertBefore(
+    announcement,
+    todayHomeworkBlock.nextSibling
+  );
+}
+
+
+// Первоначальный запуск
+renderImportantEvents();
+renderStudentNotes();
+renderUpcomingEvent();
 
 </script>
 </body>
